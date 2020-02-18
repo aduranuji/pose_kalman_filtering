@@ -1,0 +1,40 @@
+# This files was created using automatically system. you are CAREFUL with the type of the 
+# parameters because if you use parameter server parsing in service_base, it will
+# decide the type of the parameter from this file. For example: 
+# param_name: 1.0 it will deduce is a double
+# param_name: 1 it will deduce is a integer
+# param_name: 'text' it will deduce is a string
+# *****************************************************************************************
+# *                                  EVENT LIST                                           *
+# *****************************************************************************************
+
+#service_events: ['']
+# *****************************************************************************************
+# *                                  PARAMETER LIST                                       *
+# *****************************************************************************************
+
+# loop_rate: Loop rate
+loop_rate: 30.0
+
+# base_frame: Reference frame to make the tf trasnformation by default
+base_frame: /base
+
+# target_frame: Target frame to make the tf trasnformation by default
+target_frame: /base
+
+# mode: it can be tf|topic 
+mode: topic
+
+# covariance_measurament: it is the value for the diagonal matrix for covariance of the measure
+covariance_measurament: 0.1
+
+# covariance_process: It is the value for the diagonal matrix for covariance of the process
+
+covariance_process: 0.0000001
+
+
+# pose_filtered_id: It is the identifier of a visualization_msgs of filtered pose in rviz
+pose_filtered_id: 1
+
+# frame_id_check: if it is empty, it will check the trasnformation between target and base frame and piblish the filtered pose in base frame id. If it is not empty, the input pose is filtered and published with this frame id, without transformation. This is only available in topic mode.
+frame_id_check: ''

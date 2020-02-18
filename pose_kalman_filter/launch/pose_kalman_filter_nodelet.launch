@@ -1,0 +1,17 @@
+<launch>
+	<!-- The node name in ros system of this node -->
+  	<arg name="node_name" default="pose_kalman_filter"/>
+  	<arg name="activate_remaps" default="1"/>
+  	
+    <!-- path to find configuration file with service parameters -->
+    <arg name="cfg_path" default="$(find pose_kalman_filter)/cfg/default_config.yaml"/>
+	
+    <!-- name to connect the service subscriber pose_in --> 
+    <arg name="input_pose_in" default="" />
+  	<node pkg="nodelet" type="nodelet" name="$(arg node_name)" args="standalone pose_kalman_filter/PoseKalmanFilterNodelet pose_kalman_filter" output="screen">
+   		
+            <remap if="$(arg activate_remaps)" from="~pose_in" to="$(arg input_pose_in)"/>
+     	
+            <rosparam file="$(arg cfg_path)" command="load"/>
+  	</node>                 
+</launch>

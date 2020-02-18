@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service name="pose_kalman_filter" class="PoseKalmanFilter" description="This service receives a pose stamped message from a topic or read a trasnform from Tf tree and apply Kalman filter and publish the result in a topic" activated="1">
+
+    <subscribers>
+    <subscriber name="pose_in" type="geometry_msgs/PoseStamped">
+       Pose stamped will be filtered
+    </subscriber>
+    </subscribers>
+    <publishers>
+        <publisher name="pose_out" type="geometry_msgs/PoseStamped">
+				Input Pose without filter
+        </publisher>
+        <publisher name="marker_pose_out" type="visualization_msgs/Marker">
+				Input Pose without filter
+        </publisher>
+    </publishers>
+    <parameters>
+		<param name="loop_rate" type="int" value="1" description="Loop rate"/>
+		<param name="base_frame" type="string" value="/base" description="Reference frame to make the tf trasnformation by default"/>
+		<param name="target_frame" type="string" value="/base" description="Target frame to make the tf trasnformation by default"/>
+		<param name="mode" type="string" value="topic" description="it can be tf|topic "/>
+		<param name="covariance_measurament" type="double" value="0.01"  description="it is the value for the diagonal matrix for covariance of the measure"/>
+		<param name="covariance_process" type="double" value="0.001" description="It is the value for the diagonal matrix for covariance of the process"/>
+		<param name="pose_filtered_id" type="int" value="1" description="It is the identifier of a visualization_msgs of filtered pose in rviz"/> 
+	 </parameters>
+
+    <commands>
+    <command identifier="activate_filtering" description="Activate filtering. The results will be published in the topic"/>
+    <command identifier="deactivate_filtering" description="Deactivate the filtering, In the topic will be published the same value that the input"/>
+    <command identifier="setup_tf_publish" description="The string array values of the message command will have to define a valid refrence tf frame in pose 0 of the array, and the target frame in pose 1 of the array"/> 
+    <command identifier="set_mode" description="In the message string array must be defined one value with these: tf|topic."/>
+    </commands>
+    <events>
+    </events>
+
+    <dependencies>  
+       <package name="tf"/>
+       <package name="pose_handler"/>
+       
+    </dependencies>
+
+ </service>

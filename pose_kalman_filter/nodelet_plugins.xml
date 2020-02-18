@@ -1,0 +1,7 @@
+<library path="lib/libpose_kalman_filter_nodelet">
+  <class name="pose_kalman_filter/PoseKalmanFilterNodelet" type="pose_kalman_filter::PoseKalmanFilterNodelet" base_class_type="nodelet::Nodelet">
+  <description>
+  This is a nodelet to pose_kalman_filter
+  </description>
+  </class>
+</library>

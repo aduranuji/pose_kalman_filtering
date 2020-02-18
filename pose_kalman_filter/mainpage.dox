@@ -1,0 +1,126 @@
+/**
+\page pose_kalman_filter Service Pose Kalman Filter 
+
+\htmlinclude manifest.html
+
+\section Description Description of  Service Pose Kalman Filter
+
+ This service receives a pose stamped message from a topic or read a trasnform from Tf tree and apply Kalman filter and publish the result in a topic
+
+This package is composed by several files:
+<ul>
+	<li>
+		 In <b>src/</b> subfolder:
+	
+		<ul>
+			<li>
+				<b>pose_kalman_filter_main.cpp</b>: This file instance a object of PoseKalmanFilterService when it is called using a roslaunch or rosrun tools
+			</li>
+	 		<li>
+	 			<b>pose_kalman_filter_service.cpp</b>: The PoseKalmanFilterService is implemented in this file. Really, it just need to implement response() method for changing  parameters dinamically and it is necessary rewrite configureService() method to parse initial parameters of the module. The module object created in pose_kalman_filter_main.cpp launches the required threads.
+	 		</li>
+	  	    <li>
+	  	    <b>pose_kalman_filter_thread.cpp</b>: The   PoseKalmanFilterThread is implemented in this file. The main loop of the module is defined in this class. An object of this class is instanced in  pose_kalman_filter_main.cpp. When it is necessary to change parameters in run time the module object change parameters from threads using custom methods from PoseKalmanFilterThread class.
+	  	    </li>
+		</ul>
+	</li>
+	<li>
+	<b>include/</b> subfolder:
+		<ul>
+			<li>
+			<b>pose_kalman_filter_service.h</b>: The PoseKalmanFilterService is declared in this file.
+			</li>
+	  	    <li>
+	  	    <b>pose_kalman_filter_thread.h</b>: The PoseKalmanFilterThread is declared in this file.
+	  	    </li>
+	  	</ul>
+  	</li>
+
+	<li>
+	<b>launch/</b> subfolder:
+		<ul>
+			<li><b>pose_kalman_filter.launch</b>: This is the launch file used to run the node. The command line arguments of the launch file can be passed using shell
+	in this way: roslaunch 'pose_kalman_filter' pose_kalman_filter.launch arg01:=value arg02:=value. In this case, the default args are:
+				<ul>
+					<li><b>node_name:=</b>"pose_kalman_filter" </li>
+  					
+        <li> <b>cfg_path:=</b>"pose_kalman_filter"/cfg/default_config.yaml</li>
+<li><b>input_pose_in</b> is empty</li>
+  				</ul>
+  			</li>
+  			<li><b>pose_kalman_filter_nodelet.launch</b>: It is a launch file too, but the difference with upper is in this case, you start a nodelet node. The arguments are like the launch standard file</li>
+		</ul>
+	</li>	
+	<li>
+	<b>cfg/</b> subfolder: In this location, We have the default configuration file. This file is in yaml format. You have to define the external
+	parameters of service base module, into this file. If you use the parameter server structure into service base, you must be careful with the format of the parameters, because the type of the each parameter is deduced from this file
+	</li>  
+		
+	
+	
+</ul>
+\section Publishers_and_Subscribers Publishers and subscribers of  Service Pose Kalman Filter
+
+\subsection Subscribers Subscribers 
+
+- Internal name: <b>pose_in</b>
+- Message type: geometry_msgs/PoseStamped
+- Description:  Pose stamped will be filtered 
+
+
+\subsection Publishers Publishers 
+
+- Internal name: <b>pose_out</b>
+- Message type: geometry_msgs/PoseStamped
+- Description:  Input Pose without filter 
+
+
+- Internal name: <b>marker_pose_out</b>
+- Message type: visualization_msgs/Marker
+- Description:  Input Pose without filter 
+
+
+\section Dependecies_of_other_package Dependencies of other Ros Packages
+
+The ROS package dependencies are:
+
+- tf
+- geometry_msgs
+- pose_handler
+- visualization_msgs
+- roscpp
+- service_base
+- nodelet
+
+\section Initial_parameters_definitions Initial parameters definitions
+
+- <b>loop_rate</b>: Loop rate
+- <b>base_frame</b>: Reference frame to make the tf trasnformation by default
+- <b>target_frame</b>: Target frame to make the tf trasnformation by default
+- <b>mode</b>: it can be tf|topic 
+- <b>covariance_measurament</b>: it is the value for the diagonal matrix for covariance of the measure
+- <b>covariance_process</b>: It is the value for the diagonal matrix for covariance of the process
+- <b>pose_filtered_id</b>: It is the identifier of a visualization_msgs of filtered pose in rviz
+
+
+\section defined_commands Commands to control the module
+
+The commands that module will be able to capture are:
+
+- <b>activate_filtering</b>:Activate filtering. The results will be published in the topic
+- <b>deactivate_filtering</b>:Deactivate the filtering, In the topic will be published the same value that the input
+- <b>setup_tf_publish</b>:The string array values of the message command will have to define a valid refrence tf frame in pose 0 of the array, and the target frame in pose 1 of the array
+- <b>set_mode</b>:In the message string array must be defined one value with these: tf|topic.
+
+This commands must response to caller a message defined in service_base/std_msg with a specific identifier:
+- string ERROR="error"
+- string OK="ok"
+- string ABORT="abort"
+- string COMMAND_NOT_DEFINED="not_found" 
+
+\section defined_events Events could emit the module
+
+There are not defined events in this package
+
+
+*/
